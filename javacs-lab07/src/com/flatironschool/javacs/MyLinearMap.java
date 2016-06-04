@@ -63,7 +63,10 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 	 * @param target
 	 */
 	private Entry findEntry(Object target) {
-        // TODO: fill this in
+		for (Entry e : entries) {
+			if (equals(e.getKey(), target))
+				return e;
+		}
 		return null;
 	}
 
@@ -97,9 +100,15 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 	}
 
 	@Override
+	// returns the value to which the specified key is mapped,
+	// or null if this map contains no mapping for the key
 	public V get(Object key) {
-        // TODO: fill this in.
-		return null;
+        Entry e = findEntry(key);
+        if (e != null) {
+        	return e.getValue();
+        }
+        else
+			return null;
 	}
 
 	@Override
@@ -117,9 +126,21 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 	}
 
 	@Override
+	// returns the previous value associated with key, or null if there was no mapping
 	public V put(K key, V value) {
-        // TODO: fill this in.
-        return null;
+        // if the map previously contained a mapping for the key,
+        // the old value is replaced by the specified value
+        Entry e = findEntry(key);
+        if (e != null) {
+        	V previousValue = e.getValue();
+        	e.setValue(value);
+        	return previousValue;
+        }
+        // otherwise, add new value to map
+        else {
+        	entries.add(new Entry(key, value));
+        	return null;
+        }
 	}
 
 	@Override
@@ -130,9 +151,18 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 	}
 
 	@Override
+	// Removes the mapping for a key from this map if it is present
+	// Returns the value to which this map previously associated the key,
+	// or null if the map contained no mapping for the key.
 	public V remove(Object key) {
-        // TODO: fill this in.
-        return null;
+		Entry e = findEntry(key);
+        if (e != null) {
+        	V previousValue = e.getValue();
+        	entries.remove(e);
+        	return previousValue;
+        }
+        else
+        	return null;
 	}
 
 	@Override
